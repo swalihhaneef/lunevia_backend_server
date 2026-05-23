@@ -9,7 +9,7 @@ import chalk from "chalk";
 import "dotenv/config";
 import helmet from "helmet";
 import connectDB from "./database/index.js";
-import { PORT } from "./config.js";
+import { frontendUrls, PORT } from "./config.js";
 import { error } from "express-error-catcher";
 import cors from "cors";
 import "./helper/global.js";
@@ -23,7 +23,7 @@ import routes from "./routes.js";
 
 const app = express();
 
-app.use(cors({ origin: ["http://localhost:3000", "https://www.horatio.in", "https://uathoratio.vercel.app"], credentials: true }));
+app.use(cors({ origin: frontendUrls, credentials: true }));
 // app.use(cors({ origin: true, credentials: true }));
 app.use(logger("dev"));
 app.use(express.json());
