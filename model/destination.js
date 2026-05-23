@@ -14,24 +14,40 @@ const schema = new Schema(
         title: { type: String, required: true },
         slug: { type: String, required: true },
         mainImage: { type: String, required: true },
-        roomDetails: {
+        locationLink: { type: String, required: true },
+        aboutProperty: {
+            image: { type: String, required: true },
+            description: { type: String, required: true },
+            highlights: [{ type: Schema.Types.ObjectId, ref: "propertyHighlights" }]
+        },
+        galleryImages: galleryImage,
+
+        roomDetails: [{
+            title: { type: String, required: true },
             image: { type: String, required: true },
             description: { type: String, required: true },
             features: roomFeatures,
-            price: { type: Number, default: 0 }
-        },
-        availableFeatures: {
-            description: { type: String, required: true },
-        },
-        propertyFeatures: {
-            description: { type: String, required: true },
-        },
-        location: {
-            address: { type: String },
-            latitude: { type: String },
-            longitude: { type: String }
-        },
-        galleryImages: galleryImage,
+            price: { type: Number, default: 0 },
+            availableFeatures: {type: String },
+            resortAmenities: { type: String },
+        }],
+
+        amenties: [
+            {
+                title: { type: String, required: true },
+                image: { type: String, required: true },
+                description: { type: String, required: true },
+            }
+        ],
+
+        locations: [
+            {
+                title: { type: String, required: true },
+                image: { type: String, required: true },
+                description: { type: String, required: true },
+            }
+        ],
+
         addedBy: { type: Schema.Types.ObjectId, ref: "user" },
         updateBy: { type: Schema.Types.ObjectId, ref: "user" },
         date: { type: String, default: currentDate() },

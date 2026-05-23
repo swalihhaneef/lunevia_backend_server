@@ -71,3 +71,41 @@ export const addFeatureOptions = asyncErrorHandler(async (req) => {
 
   }
 })
+
+export const getPropertyHighlights = asyncErrorHandler(async (req) => {
+  try {
+
+    const data = await model.propertyHiglights.find({
+
+      status: 0
+
+    }).sort({ order: 1 });
+
+    return new Response(null, { data }, 200);
+
+  } catch (error) {
+
+    throw new Error(error.message);
+
+  }
+})
+
+export const addPropertyHighlights = asyncErrorHandler(async (req) => {
+  try {
+
+    const { name } = req.body
+
+    const exists = await model.propertyHiglights.findOne({ name });
+
+    if (exists) throw new Error(`${exists.name} already exists`, 400);
+
+    const data = await model.propertyHiglights({name}).save()
+
+    return new Response(`Option added successfully`, { data }, 200);
+
+  } catch (error) {
+
+    throw new Error(error.message);
+
+  }
+})

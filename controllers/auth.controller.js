@@ -5,6 +5,9 @@ import jwt from "jsonwebtoken";
 export const loginUser = asyncErrorHandler(async (req, res) => {
   const { email, password } = req.body;
 
+  // temp email - admin@lunevia.com
+  // temp pass - admin@124
+
   const user = await model.User.findOne({ email });
 
   if (!user) throw new Error("Invalid email or password", 400);
