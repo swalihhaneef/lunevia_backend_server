@@ -30,6 +30,7 @@ const schema = new Schema(
             price: { type: Number, default: 0 },
             availableFeatures: {type: String },
             resortAmenities: { type: String },
+            slug: { type: String, required: true },
         }],
 
         amenties: [

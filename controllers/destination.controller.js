@@ -17,7 +17,6 @@ export const list = asyncErrorHandler(async (req) => {
 });
 
 export const create = asyncErrorHandler(async (req) => {
-    console.log(req.body);
 
     const {
         title,
@@ -54,6 +53,13 @@ export const create = asyncErrorHandler(async (req) => {
         throw new Error(`${exists.title} already exists.`);
     }
 
+    if(roomDetails && roomDetails.length > 0) {
+        roomDetails = roomDetails.map((room) => {
+            let slug = generatePermalink(room.title);
+            return { ...room, slug }
+        })
+    }
+    console.log('roomDetails', roomDetails)
     // Create data
     const data = await new model.destination({
         title,
@@ -106,7 +112,7 @@ export const update = asyncErrorHandler(async (req) => {
         roomDetails,
         amenties,
         locations,
-     } = req.body;
+    } = req.body;
 
     const data = await model.destination.findOne({ slug, status: 0 });
 
