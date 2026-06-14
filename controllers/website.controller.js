@@ -60,7 +60,6 @@ export const getBlogDetails = asyncErrorHandler(async (req) => {
     const { slug, } = req.params;
     console.log(slug, 'slug');
     const data = await model.blog.findOne({ slug, status: 0 })
-        .populate("aboutProperty.highlights", "name")
         .select(unwantedFields())
         .lean();
 
