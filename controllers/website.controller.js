@@ -51,8 +51,6 @@ export const getBlogList = asyncErrorHandler(async (req) => {
     
     const query = { status: 0 };
 
-    if (!isNull(category)) query.category = category;
-
     const data = await model.blog.find(query).sort({ _id: -1 }).skip(skip).limit(limit).select(unwantedFields()).lean();
     console.log('data', data)
     return new Response("success", { data }, 200);
