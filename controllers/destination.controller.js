@@ -18,7 +18,7 @@ export const list = asyncErrorHandler(async (req) => {
 
 export const create = asyncErrorHandler(async (req) => {
 
-    const {
+    let {
         title,
         mainImage,
         locationLink,

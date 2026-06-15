@@ -5,6 +5,9 @@ import moment from "moment";
 
 import { Types } from "mongoose";
 import { Error } from "express-error-catcher";
+import { supabase } from "../supabase.js";
+import sharp from "sharp";
+import crypto from "crypto";
 
 const storage = (folder) =>
   multer.diskStorage({
@@ -34,25 +37,101 @@ const fileFilter = (req, file, cb) => {
 
 export const multerUpload = (folder = "", filter, limits = null) => {
   if (!filter) filter = fileFilter;
-  return multer({ storage: storage(folder), fileFilter: filter, limits });
+  // return multer({ storage: storage(folder), fileFilter: filter, limits });
+  return multer({
+    storage: multer.memoryStorage(),
+    fileFilter: filter,
+    limits,
+  });
 };
 
 export const currentDate = () => moment().format("YYYY-MM-DD");
 
 export const currentTime = () => moment().format("HH:mm:ss");
 
+// export const imageFileName = async (req, res) => {
+//   try {
+//     const data = req.file;
+//     if (req.file) {
+//       data.new_filename = data.destination.replace("public/", "") + "/" + data.filename;
+//       res.status(200).json({ status: 200, data });
+//     } else {
+//       res.status(400).json("something went wrong");
+//     }
+//   } catch (error) {
+//     res.status(400).json(error.message);
+//   }
+// };
+
 export const imageFileName = async (req, res) => {
   try {
-    const data = req.file;
-    if (req.file) {
-      data.new_filename = data.destination.replace("public/", "") + "/" + data.filename;
-      res.status(200).json({ status: 200, data });
-    } else {
-      res.status(400).json("something went wrong");
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
     }
+
+    const folder = req.params.folder;
+
+    // 1. Process image (resize + webp)
+    const { fileName, buffer } = await processImage(req.file.buffer);
+
+    // 2. Upload to Supabase
+    const result = await uploadImage(
+      supabase,
+      folder,
+      fileName,
+      buffer
+    );
+
+    return res.status(200).json({
+      status: 200,
+      data: result,
+    });
   } catch (error) {
-    res.status(400).json(error.message);
+    console.error(error);
+    return res.status(500).json({
+      status: 500,
+      message: error.message,
+    });
   }
+};
+
+export const processImage = async (buffer) => {
+  const fileName = crypto.randomUUID();
+
+  const imageBuffer = await sharp(buffer)
+    .resize(1600, 1600, {
+      fit: "inside", // keeps aspect ratio
+      withoutEnlargement: true,
+    })
+    .webp({ quality: 85 })
+    .toBuffer();
+
+  return {
+    fileName,
+    buffer: imageBuffer,
+  };
+};
+
+export const uploadImage = async (supabase, folder, fileName, buffer) => {
+  const filePath = `${folder}/${fileName}.webp`;
+
+  const { error } = await supabase.storage
+    .from("lunevia")
+    .upload(filePath, buffer, {
+      contentType: "image/webp",
+      upsert: false,
+    });
+
+  if (error) throw error;
+
+  const { data } = supabase.storage
+    .from("lunevia")
+    .getPublicUrl(filePath);
+
+  return {
+    path: filePath,
+    url: data.publicUrl,
+  };
 };
 
 export const generatePermalink = (str) => {
