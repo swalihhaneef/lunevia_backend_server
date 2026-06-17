@@ -12,7 +12,6 @@ const schema = new Schema(
         writer: { type: String },
         category: { type: String, required: true },
         image: { type: String, required: true },
-        permalink: { type: String },
         addedBy: { type: Schema.Types.ObjectId, ref: "user" },
         updateBy: { type: Schema.Types.ObjectId, ref: "user" },
         date: { type: String, default: currentDate() },
