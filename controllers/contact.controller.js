@@ -97,9 +97,9 @@ export const list = asyncErrorHandler(async (req) => {
   const query = { status: 0 };
   const { limit, skip } = paginationParams(req.query);
 
-  const count = await model.Contact.countDocuments(query);
+  const count = await model.contact.countDocuments(query);
 
-  const data = await model.Contact.find(query).skip(skip).limit(limit).select(unwantedFields()).sort({ _id: -1 });
+  const data = await model.contact.find(query).skip(skip).limit(limit).select(unwantedFields()).sort({ _id: -1 });
 
   return new Response(null, { count, data }, 200);
 });
