@@ -3,7 +3,7 @@ import destination from "./destination.js";
 import FeatureOptions from "./FeatureOptions.js";
 import propertyHiglights from "./propertyHiglights.js";
 import blog from "./blog.js";
-import contact from "./Contact.js";
+import contact from "./contact.js";
 
 export default {
     User,
