@@ -14,6 +14,9 @@ import websiteRouter from "./routes/website.router.js";
 
 import blogRouter from "./routes/blog.router.js";
 
+import contact from "./routes/contact.router.js";
+
+
 router.use("/", indexRouter);
 
 router.use("/auth", authRouter);
@@ -25,5 +28,8 @@ router.use('/destination', destinationRouter)
 router.use("/website", websiteRouter);
 
 router.use("/blogs", blogRouter);
+
+router.use("/contact", contact);
+
 
 export default router;

@@ -8,6 +8,7 @@ import { Error } from "express-error-catcher";
 import { supabase } from "../supabase.js";
 import sharp from "sharp";
 import crypto from "crypto";
+import nodemailer from "nodemailer";
 
 const storage = (folder) =>
   multer.diskStorage({
@@ -167,3 +168,22 @@ export async function counter(model, key = "") {
   const count = (await model.countDocuments()) + 1;
   return (key ? `${key}` : "") + count.toString().padStart(4, "0");
 }
+
+
+export const sendMail = async ({  subject, html }) => {
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  await transporter.sendMail({
+    from: "luneviaEnquiry@gmail.com",
+    to: process.env.EMAIL_USER,
+    subject,
+    html,
+  });
+};
