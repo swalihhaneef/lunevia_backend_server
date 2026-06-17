@@ -35,7 +35,7 @@ export const getRoomDetails = asyncErrorHandler(async (req) => {
     const { slug, roomSlug } = req.query;
     console.log(slug, 'slug');
     const data = await model.destination.findOne({ slug, status: 0 })
-        .select({ "roomDetails": { $elemMatch: { slug: roomSlug } }, _id: 0, title: 1 ,locationLink: 1,mainImage: 1})
+        .select({ "roomDetails": { $elemMatch: { slug: roomSlug } }, _id: 0, title: 1, locationLink: 1, mainImage: 1 })
         .select(unwantedFields())
         .lean();
 
@@ -47,10 +47,12 @@ export const getRoomDetails = asyncErrorHandler(async (req) => {
 
 export const getBlogList = asyncErrorHandler(async (req) => {
 
+    const { exclude } = req.query;
     const { skip, limit } = paginationParams(req.query);
-    
+
     const query = { status: 0 };
 
+    if(!isNull(exclude)) query.slug = { $ne: exclude };
     const data = await model.blog.find(query).sort({ _id: -1 }).skip(skip).limit(limit).select(unwantedFields()).lean();
     console.log('data', data)
     return new Response("success", { data }, 200);

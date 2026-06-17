@@ -11,7 +11,7 @@ if (!DATABASE_URL) {
 }
 
 export const frontendUrls = [
-  "https://www.lunevia.in/",
-  "https://lunevia.vercel.app/",
+  "https://www.lunevia.in",
+  "https://lunevia.vercel.app",
   "http://localhost:3000",
 ]
