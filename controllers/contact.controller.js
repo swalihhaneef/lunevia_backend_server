@@ -24,6 +24,7 @@ export const web = asyncErrorHandler(async (req) => {
     .save();
 
   await sendMail({
+    from: "luneviaEnquiry@gmail.com",
     subject: `New Enquiry From ${firstName} ${lastName}`,
     html: `
                 <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
@@ -103,10 +104,3 @@ export const list = asyncErrorHandler(async (req) => {
 
   return new Response(null, { count, data }, 200);
 });
-
-const checkMAil = async () => {
-
-  console.log("mail sent")
-}
-
-// checkMAil()

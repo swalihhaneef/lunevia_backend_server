@@ -4,6 +4,7 @@ import FeatureOptions from "./FeatureOptions.js";
 import propertyHiglights from "./propertyHiglights.js";
 import blog from "./blog.js";
 import contact from "./contact.js";
+import bookings from "./bookings.js";
 
 export default {
     User,
@@ -11,5 +12,6 @@ export default {
     FeatureOptions,
     propertyHiglights,
     blog,
-    contact
+    contact,
+    bookings
 };

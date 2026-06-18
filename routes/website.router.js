@@ -9,6 +9,8 @@ router.get("/destination/:slug", controllers.getDetails)
 
 router.get("/room/details", controllers.getRoomDetails)
 
+router.post("/bookings", controllers.addBookings)
+
 router.get("/blogs", controllers.getBlogList)
 
 router.get("/blogs/:slug", controllers.getBlogDetails)

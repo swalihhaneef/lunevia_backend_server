@@ -53,7 +53,7 @@ export const create = asyncErrorHandler(async (req) => {
         throw new Error(`${exists.title} already exists.`);
     }
 
-    if(roomDetails && roomDetails.length > 0) {
+    if (roomDetails && roomDetails.length > 0) {
         roomDetails = roomDetails.map((room) => {
             let slug = generatePermalink(room.title);
             return { ...room, slug }
@@ -104,7 +104,7 @@ export const get = asyncErrorHandler(async (req) => {
 
 export const update = asyncErrorHandler(async (req) => {
     const { slug } = req.params;
-    const { title,
+    let { title,
         mainImage,
         locationLink,
         aboutProperty,
@@ -120,7 +120,18 @@ export const update = asyncErrorHandler(async (req) => {
         throw new Error("Data not found", 404);
     }
 
-    console.log('amenties', amenties)
+    if (roomDetails?.length != data.roomDetails?.length) {
+        if (roomDetails?.length > data.roomDetails?.length) {
+            roomDetails = roomDetails.map((room) => {
+                let slug = ""
+                if(room.slug) slug = room.slug
+                else slug = generatePermalink(room.title);
+                return { ...room, slug }
+            })
+        }
+    }
+
+    // return console.log('roomDetails', roomDetails)
 
     if (!isNull(title)) data.title = title;
     if (!isNull(mainImage)) data.mainImage = mainImage;

@@ -16,6 +16,8 @@ import blogRouter from "./routes/blog.router.js";
 
 import contact from "./routes/contact.router.js";
 
+import bookingsRouter from "./routes/bookings.router.js";
+
 
 router.use("/", indexRouter);
 
@@ -31,5 +33,6 @@ router.use("/blogs", blogRouter);
 
 router.use("/contact", contact);
 
+router.use("/bookings", bookingsRouter);
 
 export default router;

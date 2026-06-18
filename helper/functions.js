@@ -170,7 +170,7 @@ export async function counter(model, key = "") {
 }
 
 
-export const sendMail = async ({  subject, html }) => {
+export const sendMail = async ({from,  subject, html }) => {
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
